@@ -1,6 +1,6 @@
 package vn.ldbach.bnote
 
-import android.graphics.drawable.Drawable
+import android.graphics.Bitmap
 import android.util.Log
 import org.json.JSONObject
 
@@ -9,7 +9,7 @@ import org.json.JSONObject
  */
 class TextNoteItem(header: String = "",
                    content: String = "",
-                   picture: Drawable? = null) : NoteItem(header, content, picture) {
+                   picture: Bitmap? = null) : NoteItem(header, content, picture) {
 
     constructor(jsonObject: JSONObject) : this() {
         header = jsonObject["header"] as String
