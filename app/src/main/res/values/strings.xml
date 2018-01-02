@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BNote</string>
+    <string name="discard_changes">Discard changes made to this note?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="discard">Discard</string>
+    <string name="save_changes">Save changes made to this note?</string>
+    <string name="save">Save</string>
+</resources>
