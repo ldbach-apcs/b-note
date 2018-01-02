@@ -1,13 +1,13 @@
 package vn.ldbach.bnote
 
 import android.content.Context
-import android.util.Log
+import android.content.Context.MODE_PRIVATE
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import org.json.JSONArray
 import org.json.JSONTokener
-import java.io.BufferedReader
-import java.io.FileNotFoundException
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
+import java.io.*
+
 
 /**
  *
@@ -32,7 +32,7 @@ class NoteDataStorage {
                 builder.append(line)
             }
 
-            Log.d("b-note", builder.toString())
+            // Log.d("b-note", builder.toString())
 
             // Split into many JsonObject
             val jsonArray = JSONTokener(builder.toString()).nextValue() as JSONArray
@@ -52,7 +52,7 @@ class NoteDataStorage {
         try {
             val jsonArr = JSONArray()
             for (note in notes) {
-                Log.d("b-note", "Note: ${note.header}")
+                // Log.d("b-note", "Note: ${note.header}")
                 jsonArr.put(note.toJSON())
             }
 
@@ -66,5 +66,23 @@ class NoteDataStorage {
         }
     }
 
+    fun saveImage(context: Context, image: Bitmap, imageName: String) {
+        val fileOutputStream = context.openFileOutput(imageName, MODE_PRIVATE)
+        image.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
+        fileOutputStream.close()
+    }
 
+    fun loadImage(context: Context, imageName: String): Bitmap? {
+        var bitmap: Bitmap? = null
+        val fiStream: FileInputStream
+        try {
+            fiStream = context.openFileInput(imageName)
+            bitmap = BitmapFactory.decodeStream(fiStream)
+            fiStream.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return bitmap
+    }
 }

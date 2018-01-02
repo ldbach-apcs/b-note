@@ -1,7 +1,6 @@
 package vn.ldbach.bnote
 
 import android.graphics.Bitmap
-import android.util.Log
 import org.json.JSONObject
 
 /**
@@ -14,6 +13,15 @@ class TextNoteItem(header: String = "",
     constructor(jsonObject: JSONObject) : this() {
         header = jsonObject["header"] as String
         content = jsonObject["content"] as String
-        Log.d("b-note", "Object loaded: $header")
+        imageName = jsonObject["imageName"] as String
+        // Log.d("b-note", "Object loaded: $header")
+    }
+
+    override fun toJSON(): JSONObject {
+        val jsonObject = JSONObject()
+        jsonObject.put("header", header)
+        jsonObject.put("content", content)
+        jsonObject.put("imageName", imageName)
+        return jsonObject
     }
 }

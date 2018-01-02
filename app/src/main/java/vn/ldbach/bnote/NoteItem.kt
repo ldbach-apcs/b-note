@@ -13,12 +13,7 @@ abstract class NoteItem(internal var header: String = "",
                         private var picture: Bitmap? = null) : Serializable {
 
     val uuid = UUID.randomUUID().toString()
+    internal var imageName = ""
 
-    open fun toJSON(): JSONObject {
-        val jsonObject = JSONObject()
-        jsonObject.put("header", header)
-        jsonObject.put("content", content)
-        return jsonObject
-    }
-
+    abstract fun toJSON(): JSONObject
 }

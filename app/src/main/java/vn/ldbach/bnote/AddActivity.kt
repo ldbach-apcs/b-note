@@ -11,9 +11,11 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_add.*
 import java.io.BufferedInputStream
+import java.util.*
 
 class AddActivity : AppCompatActivity() {
 
@@ -31,6 +33,7 @@ class AddActivity : AppCompatActivity() {
     //private val noteImageView by lazy { findViewById<ImageView>(R.id.iv_image) }
 
     private lateinit var item: NoteItem
+    private var tempImageName = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,14 +53,7 @@ class AddActivity : AppCompatActivity() {
         val pickImage = Intent(Intent.ACTION_PICK)
         // pickImage.addCategory(Intent.CATEGORY_OPENABLE)
         pickImage.type = "image/*"
-        pickImage.putExtra("crop", "true")
-        pickImage.putExtra("aspectX", 1)
-        pickImage.putExtra("aspectY", 1)
-        pickImage.putExtra("outputX", 320)
-        pickImage.putExtra("outputY", 320)
-        pickImage.putExtra("return-data", "true")
-
-        startActivityForResult(pickImage, CHOICE_PICK_GALLERY)
+        startActivityForResult(getCropIntent(pickImage), CHOICE_PICK_GALLERY)
     }
 
     private fun chooseImage() {
@@ -95,12 +91,20 @@ class AddActivity : AppCompatActivity() {
 
         header_edit.setText(item.header, TextView.BufferType.EDITABLE)
         content_edit.setText(item.content, TextView.BufferType.EDITABLE)
+
+        tempImageName = item.imageName
+        if (tempImageName != "") {
+            val storage = NoteDataStorage()
+            val bm = storage.loadImage(this, tempImageName)
+            if (bm != null) iv_image.setImageBitmap(bm)
+        }
     }
 
     private fun saveChanges() {
         // Create note
         item.header = header_edit.text.toString()
         item.content = content_edit.text.toString()
+        // item.imageName = tempImageName
 
         // Pass note to intent
         val resultIntent = Intent()
@@ -119,7 +123,8 @@ class AddActivity : AppCompatActivity() {
     override fun onBackPressed() {
         // If there are changes made to the notes
         if (item.header == header_edit.text.toString() &&
-                item.content == content_edit.text.toString()) {
+                item.content == content_edit.text.toString() &&
+                item.imageName == tempImageName) {
             discardChanges()
             return
         } else {
@@ -139,6 +144,10 @@ class AddActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK && requestCode == CHOICE_PICK_GALLERY) {
             val chosenPic = getBitmapFromData(data!!)
+            val storage = NoteDataStorage()
+            val imageName = UUID.randomUUID().toString()
+            storage.saveImage(this, chosenPic, imageName)
+            item.imageName = imageName
             iv_image.setImageBitmap(chosenPic)
         }
 
@@ -147,8 +156,8 @@ class AddActivity : AppCompatActivity() {
 
     private fun getBitmapFromData(data: Intent): Bitmap {
         val photoUri = data.data
+        Log.d("b-note", data.data.toString())
         val inputStream = contentResolver.openInputStream(photoUri)
-        // Log.d("b-note", data.data.toString())
         val bufferedInputStream = BufferedInputStream(inputStream)
         return BitmapFactory.decodeStream(bufferedInputStream)
     }
