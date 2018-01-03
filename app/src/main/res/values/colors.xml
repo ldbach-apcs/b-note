@@ -6,4 +6,5 @@
     <color name="handle_color">#123456</color>
     <color name="guide_color">#456123</color>
     <color name="frame_color">#132465</color>
+    <color name="nothing">#00000000</color>
 </resources>

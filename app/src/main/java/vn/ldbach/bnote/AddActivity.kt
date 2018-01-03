@@ -106,7 +106,6 @@ class AddActivity : AppCompatActivity() {
         // Create note
         item.header = header_edit.text.toString()
         item.content = content_edit.text.toString()
-        // item.imageName = tempImageName
 
         // Pass note to intent
         val resultIntent = Intent()

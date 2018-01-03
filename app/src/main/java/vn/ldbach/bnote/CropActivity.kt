@@ -1,23 +1,23 @@
 package vn.ldbach.bnote
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.RectF
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.isseiaoki.simplecropview.CropImageView
 import com.isseiaoki.simplecropview.callback.CropCallback
 import com.isseiaoki.simplecropview.callback.LoadCallback
 import kotlinx.android.synthetic.main.activity_crop.*
-import java.io.BufferedInputStream
+import java.util.*
 
 class CropActivity : AppCompatActivity() {
 
     private lateinit var photoUri: Uri
     private lateinit var cropRect: RectF
+    private var noChange: Boolean = true
 
     private val loadCallback = object : LoadCallback {
         override fun onSuccess() {
@@ -41,11 +41,20 @@ class CropActivity : AppCompatActivity() {
                 }
 
                 override fun onSuccess(cropped: Bitmap?) {
+                    noChange = false
                     image_preview.setImageBitmap(cropped)
                     //cropRect = image_cropper.actualCropRect
                     //inflateCropper()
                 }
             })
+        }
+
+        btn_finish_crop.setOnClickListener { _ ->
+            if (noChange) {
+                setResult(Activity.RESULT_CANCELED)
+                finish()
+            } else
+                saveChanges()
         }
 
         image_cropper.apply {
@@ -74,17 +83,19 @@ class CropActivity : AppCompatActivity() {
         inflateCropper()
     }
 
-    private fun inflateCropper() {
-        image_cropper.load(photoUri)
-                .execute(loadCallback)
+    private fun saveChanges() {
+        val fileName = UUID.randomUUID().toString()
+        val dataStorage = NoteDataStorage()
+        dataStorage.saveImage(this, image_cropper.croppedBitmap, fileName)
+        val data = Intent()
+        data.putExtra("croppedImageName", fileName)
+        setResult(Activity.RESULT_OK, data)
+        finish()
     }
 
 
-    private fun getBitmapFromData(data: Intent): Bitmap {
-        val photoUri = data.data
-        Log.d("b-note", data.data.toString())
-        val inputStream = contentResolver.openInputStream(photoUri)
-        val bufferedInputStream = BufferedInputStream(inputStream)
-        return BitmapFactory.decodeStream(bufferedInputStream)
+    private fun inflateCropper() {
+        image_cropper.load(photoUri)
+                .execute(loadCallback)
     }
 }
