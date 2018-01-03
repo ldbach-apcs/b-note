@@ -15,7 +15,6 @@ import android.util.Log
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_add.*
 import java.io.BufferedInputStream
-import java.util.*
 
 class AddActivity : AppCompatActivity() {
 
@@ -24,6 +23,8 @@ class AddActivity : AppCompatActivity() {
         internal val CHOICE_PICK_GALLERY = 404
         @JvmStatic
         internal val PERM_STORAGE = 222
+        @JvmStatic
+        internal val FINISH_IMAGE_CROP = 235
     }
 
 
@@ -53,7 +54,8 @@ class AddActivity : AppCompatActivity() {
         val pickImage = Intent(Intent.ACTION_PICK)
         // pickImage.addCategory(Intent.CATEGORY_OPENABLE)
         pickImage.type = "image/*"
-        startActivityForResult(getCropIntent(pickImage), CHOICE_PICK_GALLERY)
+        // startActivityForResult(getCropIntent(pickImage), CHOICE_PICK_GALLERY)
+        startActivityForResult(pickImage, CHOICE_PICK_GALLERY)
     }
 
     private fun chooseImage() {
@@ -142,6 +144,32 @@ class AddActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        if (resultCode != Activity.RESULT_OK) return
+
+        when (requestCode) {
+            CHOICE_PICK_GALLERY -> {
+                // val chosenPic = getBitmapFromData(data!!)
+                val photoUri = data!!.data
+                val cropIntent = Intent(this, CropActivity::class.java)
+                cropIntent.putExtra("photoUri", photoUri.toString())
+                startActivityForResult(cropIntent, FINISH_IMAGE_CROP)
+            }
+            FINISH_IMAGE_CROP -> {
+                if (data == null) return
+
+                // val imageName = UUID.randomUUID().toString()
+                val storage = NoteDataStorage()
+                val croppedImageName = data.getStringExtra("croppedImageName")
+                val croppedImage = storage.loadImage(this, croppedImageName) ?: return
+                // storage.saveImage(this, croppedImage, imageName)
+
+                item.imageName = croppedImageName
+                iv_image.setImageBitmap(croppedImage)
+            }
+        }
+
+        /*
         if (resultCode == RESULT_OK && requestCode == CHOICE_PICK_GALLERY) {
             val chosenPic = getBitmapFromData(data!!)
             val storage = NoteDataStorage()
@@ -150,6 +178,7 @@ class AddActivity : AppCompatActivity() {
             item.imageName = imageName
             iv_image.setImageBitmap(chosenPic)
         }
+        */
 
         super.onActivityResult(requestCode, resultCode, data)
     }
