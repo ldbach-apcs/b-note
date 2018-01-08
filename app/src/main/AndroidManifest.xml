@@ -3,6 +3,8 @@
     package="vn.ldbach.bnote">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -11,6 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <receiver android:name=".AlarmReceiver">
+            <intent-filter>
+                <action android:name="vn.ldbach.bnote" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +29,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddActivity" />
-        <activity android:name=".CropActivity"></activity>
+        <activity android:name=".CropActivity" />
+        <activity
+            android:name=".NotifyActivity"
+            android:label="@string/title_activity_notify"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
+
 
 </manifest>

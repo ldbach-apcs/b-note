@@ -1,20 +1,24 @@
 package vn.ldbach.bnote
 
 import android.Manifest
-import android.app.Activity
-import android.app.AlertDialog
+import android.app.*
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.media.RingtoneManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.NotificationCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_add.*
 import java.io.BufferedInputStream
+import java.util.*
 
 class AddActivity : AppCompatActivity() {
 
@@ -25,6 +29,8 @@ class AddActivity : AppCompatActivity() {
         internal val PERM_STORAGE = 222
         @JvmStatic
         internal val FINISH_IMAGE_CROP = 235
+        @JvmStatic
+        internal val ALARM_REQUEST_CODE = 111
     }
 
 
@@ -48,6 +54,33 @@ class AddActivity : AppCompatActivity() {
         iv_image.setOnClickListener { _ ->
             chooseImage()
         }
+
+        btn_sendNotification.setOnClickListener { _ ->
+            // sendNotification()
+            setAlarm()
+        }
+    }
+
+    private fun sendNotification() {
+        val drawable = iv_image.drawable as BitmapDrawable
+        val bitmap = drawable.bitmap
+
+        val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
+        @Suppress("DEPRECATION")
+        val notifyBuilder = NotificationCompat.Builder(this)
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.ic_photo_white_36dp)
+                .setContentTitle(header_edit.text)
+                .setContentText(content_edit.text)
+                .setSound(alarmSound)
+                .setLargeIcon(bitmap)
+                .setStyle(
+                        NotificationCompat.BigPictureStyle()
+                                .bigPicture(bitmap))
+
+        val notifyManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notifyManager.notify(System.currentTimeMillis().toInt(), notifyBuilder.build())
     }
 
     private fun pickImageAndCrop() {
@@ -75,6 +108,7 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
+    @Suppress("unused")
     private fun getCropIntent(intent: Intent): Intent {
         intent.putExtra("crop", "true")
         intent.putExtra("aspectX", 1)
@@ -142,6 +176,29 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
+    private fun setAlarm() {
+        Log.d("b-note", "Test alarm clicked")
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val alarmIntent = Intent(this, AlarmReceiver::class.java)
+
+        alarmIntent.action = "vn.ldbach.bnote"
+
+        val bundle = Bundle()
+        bundle.putSerializable("note_item", item)
+        alarmIntent.putExtra("bundle", bundle)
+
+        val pendingIntent = PendingIntent.getBroadcast(
+                this,
+                UUID.randomUUID().hashCode(),
+                alarmIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT)
+
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,
+                System.currentTimeMillis() + 5000,
+                pendingIntent)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         if (resultCode != Activity.RESULT_OK) return
@@ -182,6 +239,7 @@ class AddActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+    @Suppress("unused")
     private fun getBitmapFromData(data: Intent): Bitmap {
         val photoUri = data.data
         Log.d("b-note", data.data.toString())
