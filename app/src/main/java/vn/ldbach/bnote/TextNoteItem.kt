@@ -22,6 +22,7 @@ class TextNoteItem(header: String = "",
         jsonObject.put("header", header)
         jsonObject.put("content", content)
         jsonObject.put("imageName", imageName)
+        jsonObject.put("uuid", uuid)
         return jsonObject
     }
 }

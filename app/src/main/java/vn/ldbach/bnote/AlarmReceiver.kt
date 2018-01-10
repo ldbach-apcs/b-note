@@ -9,7 +9,6 @@ import android.graphics.Bitmap
 import android.media.RingtoneManager
 import android.support.v4.app.NotificationCompat
 import android.util.Log
-import java.util.*
 
 /**
  * Created by Duy-Bach on 1/7/2018.
@@ -48,7 +47,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val pendingActivity = PendingIntent.getActivity(
                 context,
-                UUID.randomUUID().hashCode(),
+                item.uuid.hashCode(),
                 notificationActivity,
                 PendingIntent.FLAG_UPDATE_CURRENT)
 

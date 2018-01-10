@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.activity_notify.*
 
 class NotifyActivity : AppCompatActivity() {
 
-    var i: TextNoteItem? = null
+    private var item: TextNoteItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,12 +16,12 @@ class NotifyActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val b = intent.getBundleExtra("bundle")
-        i = b.getSerializable("note_item") as? TextNoteItem
+        item = b.getSerializable("note_item") as? TextNoteItem
 
         fab.setOnClickListener { view ->
-            if (i == null)
+            if (item == null)
                 return@setOnClickListener
-            else Snackbar.make(view, i!!.header, Snackbar.LENGTH_LONG)
+            else Snackbar.make(view, item!!.header, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
     }

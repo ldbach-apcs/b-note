@@ -41,6 +41,8 @@ class AddActivity : AppCompatActivity() {
 
     private lateinit var item: NoteItem
     private var tempImageName = ""
+    private lateinit var c: Calendar
+    private var firstUse = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +61,51 @@ class AddActivity : AppCompatActivity() {
             // sendNotification()
             setAlarm()
         }
+
+        tv_pick_time_date.setOnClickListener { _ ->
+            pickDateTime()
+        }
+    }
+
+    private fun pickDateTime() {
+        if (firstUse) {
+            c = Calendar.getInstance()
+            firstUse = false
+        }
+
+        val datePickerCallback = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            c.set(year, monthOfYear, dayOfMonth)
+            showPickTime()
+        }
+
+        DatePickerDialog(
+                this,
+                datePickerCallback,
+                c.get(Calendar.YEAR),
+                c.get(Calendar.MONTH),
+                c.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }
+
+    private fun showPickTime() {
+        val timePickerCallback = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+            c.apply {
+                set(Calendar.HOUR_OF_DAY, hourOfDay)
+                set(Calendar.MINUTE, minute)
+
+                // Now update view
+
+                // And save alarm
+            }
+        }
+
+        TimePickerDialog(
+                this,
+                timePickerCallback,
+                c.get(Calendar.HOUR_OF_DAY),
+                c.get(Calendar.MINUTE),
+                false
+        ).show()
     }
 
     private fun sendNotification() {
