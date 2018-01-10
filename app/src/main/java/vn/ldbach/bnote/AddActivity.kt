@@ -2,16 +2,12 @@ package vn.ldbach.bnote
 
 import android.Manifest
 import android.app.*
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.media.RingtoneManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
-import android.support.v4.app.NotificationCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -94,8 +90,12 @@ class AddActivity : AppCompatActivity() {
                 set(Calendar.MINUTE, minute)
 
                 // Now update view
+                tv_pick_time_date.text =
+                        "${c.timeInMillis}"
 
                 // And save alarm
+                item.hasAlarm = true
+                item.nextAlarm = c.timeInMillis
             }
         }
 
@@ -106,28 +106,6 @@ class AddActivity : AppCompatActivity() {
                 c.get(Calendar.MINUTE),
                 false
         ).show()
-    }
-
-    private fun sendNotification() {
-        val drawable = iv_image.drawable as BitmapDrawable
-        val bitmap = drawable.bitmap
-
-        val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-
-        @Suppress("DEPRECATION")
-        val notifyBuilder = NotificationCompat.Builder(this)
-                .setAutoCancel(true)
-                .setSmallIcon(R.drawable.ic_photo_white_36dp)
-                .setContentTitle(header_edit.text)
-                .setContentText(content_edit.text)
-                .setSound(alarmSound)
-                .setLargeIcon(bitmap)
-                .setStyle(
-                        NotificationCompat.BigPictureStyle()
-                                .bigPicture(bitmap))
-
-        val notifyManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notifyManager.notify(System.currentTimeMillis().toInt(), notifyBuilder.build())
     }
 
     private fun pickImageAndCrop() {
@@ -204,9 +182,7 @@ class AddActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         // If there are changes made to the notes
-        if (item.header == header_edit.text.toString() &&
-                item.content == content_edit.text.toString() &&
-                item.imageName == tempImageName) {
+        if (itemChanged()) {
             discardChanges()
             return
         } else {
@@ -223,6 +199,13 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
+    private fun itemChanged(): Boolean {
+        return item.header == header_edit.text.toString() &&
+                item.content == content_edit.text.toString() &&
+                item.imageName == tempImageName &&
+                item.nextAlarm == c.timeInMillis
+    }
+
     private fun setAlarm() {
         Log.d("b-note", "Test alarm clicked")
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
@@ -236,13 +219,14 @@ class AddActivity : AppCompatActivity() {
 
         val pendingIntent = PendingIntent.getBroadcast(
                 this,
-                UUID.randomUUID().hashCode(),
+                item.uuid.hashCode(),
                 alarmIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
 
 
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis() + 5000,
+        alarmManager.set(
+                AlarmManager.RTC_WAKEUP,
+                item.nextAlarm,
                 pendingIntent)
     }
 
