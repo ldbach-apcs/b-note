@@ -10,9 +10,12 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.util.DisplayMetrics
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_add.*
+import kotlinx.android.synthetic.main.content_add.*
 import java.io.BufferedInputStream
 import java.util.*
 
@@ -37,14 +40,17 @@ class AddActivity : AppCompatActivity() {
 
     private lateinit var item: NoteItem
     private var tempImageName = ""
-    private lateinit var c: Calendar
+    private var c = Calendar.getInstance()
     private var firstUse = true
+    private var showImage = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
 
         loadNote()
+        loadUi()
+
         btn_finish.setOnClickListener { _ ->
             saveChanges()
         }
@@ -61,6 +67,32 @@ class AddActivity : AppCompatActivity() {
         tv_pick_time_date.setOnClickListener { _ ->
             pickDateTime()
         }
+    }
+
+    private fun loadUi() {
+        /*add_toolbar.apply {
+            setSupportActionBar(this)
+        }*/
+
+        header_edit.apply {
+            setSelection(this.length())
+        }
+
+        setSupportActionBar(add_toolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+        }
+
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+
+        /*iv_image.apply {
+            layoutParams.height = displayMetrics.widthPixels
+            requestLayout()
+        }*/
+
+        if (showImage) iv_image.visibility = View.VISIBLE
     }
 
     private fun pickDateTime() {
@@ -81,6 +113,11 @@ class AddActivity : AppCompatActivity() {
                 c.get(Calendar.MONTH),
                 c.get(Calendar.DAY_OF_MONTH)
         ).show()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private fun showPickTime() {
@@ -157,7 +194,10 @@ class AddActivity : AppCompatActivity() {
         if (tempImageName != "") {
             val storage = NoteDataStorage()
             val bm = storage.loadImage(this, tempImageName)
-            if (bm != null) iv_image.setImageBitmap(bm)
+            if (bm != null) {
+                showImage = true
+                iv_image.setImageBitmap(bm)
+            }
         }
     }
 

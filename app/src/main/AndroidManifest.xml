@@ -28,8 +28,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddActivity" />
+
+        <activity
+            android:name=".AddActivity"
+            android:label=" "
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".CropActivity" />
+
         <activity
             android:name=".NotifyActivity"
             android:label="@string/title_activity_notify"

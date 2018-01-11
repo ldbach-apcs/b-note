@@ -7,4 +7,6 @@
     <string name="save_changes">Save changes made to this note?</string>
     <string name="save">Save</string>
     <string name="title_activity_notify">NotifyActivity</string>
+    <string name="sample_body">Sample body</string>
+    <string name="sample_title">Title</string>
 </resources>

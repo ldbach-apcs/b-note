@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+
+    tools:showIn="@layout/activity_add">
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:maxHeight="272dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher_round"
+        android:visibility="gone"
+        tools:ignore="ContentDescription" />
+
+    <!-- height = number, weight = 0 -->
+    <EditText
+        android:id="@+id/header_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
+        android:hint="@string/sample_title"
+        android:inputType="text"
+        android:paddingEnd="12dp"
+        android:paddingStart="16dp"
+        android:textColorHint="#5F5F5F"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="serif" />
+
+    <!-- height = 0, weight = 1 -->
+    <EditText
+        android:id="@+id/content_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="@string/sample_body"
+        android:inputType="textMultiLine"
+        android:minHeight="64dp"
+        android:paddingEnd="12dp"
+        android:paddingStart="16dp"
+        android:textSize="16sp"
+        android:typeface="sans" />
+
+
+    <!-- height = number, weight = 0 -->
+    <!-- Add a bottom sheet here -->
+
+    <Button
+        android:id="@+id/btn_finish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finish"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/btn_sendNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test noti"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/tv_pick_time_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick time"
+        android:visibility="invisible" />
+
+</LinearLayout>
