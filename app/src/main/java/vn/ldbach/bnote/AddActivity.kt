@@ -7,14 +7,17 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v4.widget.NestedScrollView
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_add.*
+import kotlinx.android.synthetic.main.add_bottom_sheet.*
 import kotlinx.android.synthetic.main.content_add.*
 import java.io.BufferedInputStream
 import java.util.*
@@ -43,6 +46,8 @@ class AddActivity : AppCompatActivity() {
     private var c = Calendar.getInstance()
     private var firstUse = true
     private var showImage = false
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
+    private var closeBottomSheet = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +98,31 @@ class AddActivity : AppCompatActivity() {
         }*/
 
         if (showImage) iv_image.visibility = View.VISIBLE
+
+        // loadBottomSheet()
+    }
+
+    private fun loadBottomSheet() {
+        bottomSheetBehavior = BottomSheetBehavior.from(add_bottom_sheet)
+        bottomSheetBehavior.peekHeight =
+                (resources.getDimension(R.dimen.bottom_peek_height) / resources.displayMetrics.density).toInt()
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBehavior.setBottomSheetCallback(bottomSheetCallback)
+    }
+
+    private val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
+        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+        }
+
+        override fun onStateChanged(bottomSheet: View, newState: Int) {
+            closeBottomSheet = (newState != BottomSheetBehavior.STATE_COLLAPSED)
+
+            val showDummyView = newState == BottomSheetBehavior.STATE_EXPANDED
+            if (showDummyView) {
+                black_out_view.visibility = View.VISIBLE
+            } else black_out_view.visibility = View.GONE
+        }
     }
 
     private fun pickDateTime() {
@@ -221,6 +251,11 @@ class AddActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        if (closeBottomSheet) {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
+
         // If there are changes made to the notes
         if (itemChanged()) {
             discardChanges()

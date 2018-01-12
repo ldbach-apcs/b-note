@@ -30,8 +30,24 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <include layout="@layout/content_add" />
+
     </ScrollView>
 
-    <include layout="@layout/add_bottom_sheet" />
+    <TextView
+        android:id="@+id/tv_pick_time_date"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_gravity="bottom"
+        android:background="#F0242438"
+        android:clickable="true"
+        android:elevation="4dp"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:text="Pick time"
+        android:textAlignment="center"
+        android:textColor="#FAFAFA"
+        android:textSize="18sp" />
+
 
 </android.support.design.widget.CoordinatorLayout>
