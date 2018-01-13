@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- add icon later -->
+    <item
+        android:id="@+id/action_change_schedule"
+        android:title="Reschedule"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_remove_schedule"
+        android:title="Remove schedule"
+        app:showAsAction="ifRoom" />
+
+</menu>

@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:background="@android:color/transparent"
-        android:hint="@string/sample_title"
+        android:hint="@string/hint_title"
         android:inputType="text"
         android:paddingEnd="12dp"
         android:paddingStart="16dp"
@@ -43,7 +43,7 @@
         android:layout_marginTop="4dp"
         android:background="@android:color/transparent"
         android:gravity="top"
-        android:hint="@string/sample_body"
+        android:hint="@string/hint_content"
         android:inputType="textMultiLine"
         android:minHeight="64dp"
         android:paddingEnd="12dp"
@@ -54,13 +54,6 @@
 
     <!-- height = number, weight = 0 -->
     <!-- Add a bottom sheet here -->
-
-    <Button
-        android:id="@+id/btn_finish"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Finish"
-        android:visibility="invisible" />
 
     <Button
         android:id="@+id/btn_sendNotification"

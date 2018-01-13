@@ -7,6 +7,25 @@
     <string name="save_changes">Save changes made to this note?</string>
     <string name="save">Save</string>
     <string name="title_activity_notify">NotifyActivity</string>
-    <string name="sample_body">Sample body</string>
-    <string name="sample_title">Title</string>
+    <string name="hint_content">Add description</string>
+    <string name="hint_title">Take your note</string>
+    <string name="save_note">Save note</string>
+    <string name="schedule_dialog_title">Add a schedule</string>
+
+
+    <!-- Spinner string arrays -->
+    <string-array name="notify_in_advance_arrays">
+        <item>Notify an hour in advance</item>
+        <item>Notify a day in advance</item>
+        <item>Notify a week in advance</item>
+        <item>Notify a month in advance</item>
+    </string-array>
+
+    <string-array name="repeat_frequency_arrays">
+        <item>Repeat daily</item>
+        <item>Repeat weekly</item>
+        <item>Repeat monthly</item>
+        <item>Repeat yearly</item>
+    </string-array>
+
 </resources>

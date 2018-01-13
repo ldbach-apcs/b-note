@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.widget.Toast
 import org.json.JSONArray
 import org.json.JSONTokener
 import java.io.*
@@ -84,5 +85,10 @@ class NoteDataStorage {
         }
 
         return bitmap
+    }
+
+    fun deleteImage(context: Context, imageName: String) {
+        Toast.makeText(context, "Delete old image in background", Toast.LENGTH_SHORT).show()
+        context.deleteFile(imageName)
     }
 }

@@ -1,7 +1,10 @@
 package vn.ldbach.bnote
 
 import android.Manifest
-import android.app.*
+import android.app.Activity
+import android.app.AlarmManager
+import android.app.AlertDialog
+import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -14,10 +17,11 @@ import android.support.v4.widget.NestedScrollView
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_add.*
-import kotlinx.android.synthetic.main.add_bottom_sheet.*
 import kotlinx.android.synthetic.main.content_add.*
 import java.io.BufferedInputStream
 import java.util.*
@@ -44,8 +48,8 @@ class AddActivity : AppCompatActivity() {
     private lateinit var item: NoteItem
     private var tempImageName = ""
     private var c = Calendar.getInstance()
-    private var firstUse = true
-    private var showImage = false
+    // private var firstUse = true
+    private var hasImage = false
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
     private var closeBottomSheet = false
 
@@ -61,7 +65,7 @@ class AddActivity : AppCompatActivity() {
         }
 
         iv_image.setOnClickListener { _ ->
-            chooseImage()
+            handleImageItem()
         }
 
         btn_sendNotification.setOnClickListener { _ ->
@@ -69,9 +73,9 @@ class AddActivity : AppCompatActivity() {
             setAlarm()
         }
 
-        tv_pick_time_date.setOnClickListener { _ ->
+        /*tv_pick_time_date.setOnClickListener { _ ->
             pickDateTime()
-        }
+        }*/
     }
 
     private fun loadUi() {
@@ -97,35 +101,12 @@ class AddActivity : AppCompatActivity() {
             requestLayout()
         }*/
 
-        if (showImage) iv_image.visibility = View.VISIBLE
+        if (hasImage) iv_image.visibility = View.VISIBLE
 
         // loadBottomSheet()
     }
 
-    private fun loadBottomSheet() {
-        bottomSheetBehavior = BottomSheetBehavior.from(add_bottom_sheet)
-        bottomSheetBehavior.peekHeight =
-                (resources.getDimension(R.dimen.bottom_peek_height) / resources.displayMetrics.density).toInt()
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheetBehavior.setBottomSheetCallback(bottomSheetCallback)
-    }
-
-    private val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
-        override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-        }
-
-        override fun onStateChanged(bottomSheet: View, newState: Int) {
-            closeBottomSheet = (newState != BottomSheetBehavior.STATE_COLLAPSED)
-
-            val showDummyView = newState == BottomSheetBehavior.STATE_EXPANDED
-            if (showDummyView) {
-                black_out_view.visibility = View.VISIBLE
-            } else black_out_view.visibility = View.GONE
-        }
-    }
-
-    private fun pickDateTime() {
+    /*private fun pickDateTime() {
         if (firstUse) {
             c = Calendar.getInstance()
             firstUse = false
@@ -143,6 +124,77 @@ class AddActivity : AppCompatActivity() {
                 c.get(Calendar.MONTH),
                 c.get(Calendar.DAY_OF_MONTH)
         ).show()
+    }*/
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_add_layout, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_add_picture -> handleImageItem()
+            R.id.action_schedule -> handleScheduleItemClicked()
+        }
+        return true
+    }
+
+    private fun handleImageItem() {
+        if (hasImage) {
+            // Prompt
+            val dialogBuilder = AlertDialog.Builder(this)
+            dialogBuilder.setItems(arrayOf("Replace picture", "Delete picture")) { _, which ->
+                if (which == 0) {
+                    // Replace picture
+                    chooseImage()
+                } else {
+                    // delete picture
+                    val storage = NoteDataStorage()
+                    if (item.imageName.isNotEmpty())
+                        storage.deleteImage(this, item.imageName)
+                    item.imageName = ""
+                    iv_image.visibility = View.GONE
+                    hasImage = false
+                }
+            }.show()
+
+
+        } else {
+            // Go straight to pick image
+            chooseImage()
+        }
+    }
+
+    private fun handleScheduleItemClicked() {
+        /*if (hasSchedule) {
+            // Prompt
+            val dialogBuilder = AlertDialog.Builder(this)
+            dialogBuilder.setItems(arrayOf("Replace picture", "Delete picture")) { _, which ->
+                if (which == 0) {
+                    // Replace picture
+                    chooseImage()
+                } else {
+                    // delete picture
+                    val storage = NoteDataStorage()
+                    if (item.imageName.isNotEmpty())
+                        storage.deleteImage(this, item.imageName)
+                    item.imageName = ""
+                }
+            }.show()
+
+
+        }
+        else {
+            // Go straight to pick image
+            chooseImage()
+        }*/
+
+        // Show a dialog
+        val dialog = ScheduleDialog(item, this)
+        //dialog.setTitle(R.string.schedule_dialog_title)
+        //dialog.window.setTitle(resources.getString(R.string.schedule_dialog_title))
+        dialog.show()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -150,7 +202,7 @@ class AddActivity : AppCompatActivity() {
         return true
     }
 
-    private fun showPickTime() {
+    /*private fun showPickTime() {
         val timePickerCallback = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
             c.apply {
                 set(Calendar.HOUR_OF_DAY, hourOfDay)
@@ -173,7 +225,7 @@ class AddActivity : AppCompatActivity() {
                 c.get(Calendar.MINUTE),
                 false
         ).show()
-    }
+    }*/
 
     private fun pickImageAndCrop() {
         val pickImage = Intent(Intent.ACTION_PICK)
@@ -225,7 +277,7 @@ class AddActivity : AppCompatActivity() {
             val storage = NoteDataStorage()
             val bm = storage.loadImage(this, tempImageName)
             if (bm != null) {
-                showImage = true
+                hasImage = true
                 iv_image.setImageBitmap(bm)
             }
         }
@@ -326,7 +378,12 @@ class AddActivity : AppCompatActivity() {
                 val croppedImage = storage.loadImage(this, croppedImageName) ?: return
                 // storage.saveImage(this, croppedImage, imageName)
 
+                // if previously hasImage, delete old image
+                if (hasImage) storage.deleteImage(this, item.imageName)
+
+                hasImage = true
                 item.imageName = croppedImageName
+                iv_image.visibility = View.VISIBLE
                 iv_image.setImageBitmap(croppedImage)
             }
         }
