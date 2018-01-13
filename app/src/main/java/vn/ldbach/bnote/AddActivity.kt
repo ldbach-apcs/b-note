@@ -10,10 +10,8 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.support.v4.widget.NestedScrollView
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
 import android.util.Log
@@ -26,7 +24,11 @@ import kotlinx.android.synthetic.main.content_add.*
 import java.io.BufferedInputStream
 import java.util.*
 
-class AddActivity : AppCompatActivity() {
+class AddActivity : AppCompatActivity(), ScheduleObserver {
+    override fun onFinish(newItem: NoteItem) {
+        item = newItem
+        dialog.dismiss()
+    }
 
     companion object {
         @JvmStatic
@@ -50,8 +52,7 @@ class AddActivity : AppCompatActivity() {
     private var c = Calendar.getInstance()
     // private var firstUse = true
     private var hasImage = false
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
-    private var closeBottomSheet = false
+    private lateinit var dialog: ScheduleDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +61,9 @@ class AddActivity : AppCompatActivity() {
         loadNote()
         loadUi()
 
+        dialog = ScheduleDialog(item, this, this)
+
+        btn_finish.requestFocus()
         btn_finish.setOnClickListener { _ ->
             saveChanges()
         }
@@ -136,6 +140,7 @@ class AddActivity : AppCompatActivity() {
         when (item?.itemId) {
             R.id.action_add_picture -> handleImageItem()
             R.id.action_schedule -> handleScheduleItemClicked()
+            else -> return false
         }
         return true
     }
@@ -191,7 +196,7 @@ class AddActivity : AppCompatActivity() {
         }*/
 
         // Show a dialog
-        val dialog = ScheduleDialog(item, this)
+        dialog = ScheduleDialog(item, this, this)
         //dialog.setTitle(R.string.schedule_dialog_title)
         //dialog.window.setTitle(resources.getString(R.string.schedule_dialog_title))
         dialog.show()
@@ -214,7 +219,7 @@ class AddActivity : AppCompatActivity() {
 
                 // And save alarm
                 item.hasAlarm = true
-                item.nextAlarm = c.timeInMillis
+                item.eventTime = c.timeInMillis
             }
         }
 
@@ -296,6 +301,8 @@ class AddActivity : AppCompatActivity() {
         finish()
     }
 
+
+    @Suppress("unused")
     private fun discardChanges() {
         // finish, discard all changes
         setResult(Activity.RESULT_CANCELED)
@@ -303,13 +310,8 @@ class AddActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (closeBottomSheet) {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        }
-
-
         // If there are changes made to the notes
-        if (itemChanged()) {
+        /*if (itemChanged()) {
             discardChanges()
             return
         } else {
@@ -323,14 +325,17 @@ class AddActivity : AppCompatActivity() {
                     })
 
             builder.show()
-        }
+        }*/
+
+        saveChanges()
     }
 
+    @Suppress("unused")
     private fun itemChanged(): Boolean {
         return item.header == header_edit.text.toString() &&
                 item.content == content_edit.text.toString() &&
                 item.imageName == tempImageName &&
-                item.nextAlarm == c.timeInMillis
+                item.eventTime == c.timeInMillis
     }
 
     private fun setAlarm() {
@@ -353,7 +358,7 @@ class AddActivity : AppCompatActivity() {
 
         alarmManager.set(
                 AlarmManager.RTC_WAKEUP,
-                item.nextAlarm,
+                item.eventTime,
                 pendingIntent)
     }
 

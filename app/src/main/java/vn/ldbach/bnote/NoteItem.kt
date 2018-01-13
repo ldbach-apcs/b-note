@@ -20,13 +20,17 @@ abstract class NoteItem(internal var header: String = "",
     internal var hasAlarm = false
 
     // This variable gives information about the upcoming
-    // notification of current note
-    internal var nextAlarm: Long = 0
+    // event of current note
+    internal var eventTime: Long = Calendar.getInstance().timeInMillis
+
+    // This variable gives information about how early
+    // before the event should the notification fire
+    internal var earlyNotifyTime: EarlyNotifyTime = EarlyNotifyTime.NO_NOTIFY
 
     // This variable is used when alarm is fired, resetting
     // alarm for next occasion, i.e: next year for once
     // a year event
-    internal var alarmInterval: Long = Long.MAX_VALUE
+    internal var alarmInterval: AlarmInterval = AlarmInterval.NO_REPEAT
 
     abstract fun toJSON(): JSONObject
 }

@@ -9,4 +9,6 @@
     <color name="guide_color">#456123</color>
     <color name="frame_color">#132465</color>
     <color name="nothing">#00000000</color>
+    <color name="button_background">#FA242438</color>
+    <color name="button_text">#F0F0F0</color>
 </resources>

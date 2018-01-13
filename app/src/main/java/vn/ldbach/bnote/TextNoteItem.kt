@@ -13,6 +13,9 @@ class TextNoteItem(header: String = "",
         content = jsonObject["content"] as String
         imageName = jsonObject["imageName"] as String
         // Log.d("b-note", "Object loaded: $header")
+
+        alarmInterval = AlarmInterval.valueOf(jsonObject["interval"] as String)
+        earlyNotifyTime = EarlyNotifyTime.valueOf(jsonObject["early"] as String)
     }
 
     override fun toJSON(): JSONObject {
@@ -21,6 +24,9 @@ class TextNoteItem(header: String = "",
         jsonObject.put("content", content)
         jsonObject.put("imageName", imageName)
         jsonObject.put("uuid", uuid)
+
+        jsonObject.put("interval", alarmInterval.name)
+        jsonObject.put("early", earlyNotifyTime.name)
         return jsonObject
     }
 }

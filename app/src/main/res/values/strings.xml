@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">BNote</string>
     <string name="discard_changes">Discard changes made to this note?</string>
-    <string name="ok">OK</string>
+    <string name="ok">Save</string>
     <string name="cancel">Cancel</string>
     <string name="discard">Discard</string>
     <string name="save_changes">Save changes made to this note?</string>
@@ -12,19 +12,23 @@
     <string name="save_note">Save note</string>
     <string name="schedule_dialog_title">Add a schedule</string>
 
+    <string name="date_dialog">Schedule on %1$02d/%2$02d/%3$4d</string>
+    <string name="time_dialog">At %1$02d:%2$02d</string>
+    <string name="add_a_schedule">Add a schedule</string>
 
     <!-- Spinner string arrays -->
     <string-array name="notify_in_advance_arrays">
+        <item>Do not notify</item>
+        <item>Notify at exact time</item>
         <item>Notify an hour in advance</item>
         <item>Notify a day in advance</item>
         <item>Notify a week in advance</item>
-        <item>Notify a month in advance</item>
     </string-array>
 
     <string-array name="repeat_frequency_arrays">
+        <item>Do not repeat</item>
         <item>Repeat daily</item>
         <item>Repeat weekly</item>
-        <item>Repeat monthly</item>
         <item>Repeat yearly</item>
     </string-array>
 

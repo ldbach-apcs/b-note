@@ -1,12 +1,15 @@
 package vn.ldbach.bnote
 
 import android.app.Activity
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 
 class MainActivity : AppCompatActivity() {
 
@@ -75,5 +78,51 @@ class MainActivity : AppCompatActivity() {
                 adapter.notifyItemInserted(notes.size - 1)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setAlarms()
+    }
+
+    private fun setAlarms() {
+        notes
+                .filter { it.earlyNotifyTime != EarlyNotifyTime.NO_NOTIFY }
+                .forEach { setAlarm(it) }
+    }
+
+    private fun setAlarm(item: NoteItem) {
+        Log.d("b-note", "Test alarm clicked")
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val alarmIntent = Intent(this, AlarmReceiver::class.java)
+
+        alarmIntent.action = "vn.ldbach.bnote"
+
+        val bundle = Bundle()
+        bundle.putSerializable("note_item", item)
+        alarmIntent.putExtra("bundle", bundle)
+
+        val pendingIntent = PendingIntent.getBroadcast(
+                this,
+                item.uuid.hashCode(),
+                alarmIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT)
+
+        var alarmTime = item.eventTime + item.earlyNotifyTime.getValue()
+        val interval = item.alarmInterval.getValue()
+
+        while (interval != 0L && alarmTime < System.currentTimeMillis()) {
+            item.eventTime += interval
+            alarmTime += interval
+        }
+
+        // If none repetitive alarm fired already
+        if (alarmTime <= System.currentTimeMillis())
+            item.earlyNotifyTime = EarlyNotifyTime.NO_NOTIFY
+        else
+            alarmManager.set(
+                    AlarmManager.RTC_WAKEUP,
+                    alarmTime,
+                    pendingIntent)
     }
 }

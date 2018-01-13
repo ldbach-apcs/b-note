@@ -9,7 +9,10 @@
         android:alignmentMode="alignBounds"
         android:columnCount="1"
         android:columnOrderPreserved="false"
-        android:padding="8dp"
+        android:paddingBottom="4dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
         android:useDefaultMargins="true">
 
         <!-- Group of icons
@@ -40,24 +43,34 @@
 
         <!-- Group of descriptive text -->
         <TextView
+            android:layout_column="0"
+            android:layout_gravity="top"
+            android:layout_row="0"
+            android:paddingBottom="4dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="8dp"
+            android:text="@string/add_a_schedule"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/dialog_tv_date"
             android:layout_column="0"
             android:layout_gravity="center_vertical"
-            android:layout_row="0"
             android:paddingEnd="16dp"
             android:paddingStart="8dp"
-            android:text="current date"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/dialog_tv_time"
             android:layout_column="0"
             android:layout_gravity="center_vertical"
-            android:layout_row="1"
             android:paddingEnd="16dp"
             android:paddingStart="8dp"
-            android:text="current time"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:textSize="17sp" />
 
         <!-- Group of spinner for notification -->
         <Spinner
@@ -69,6 +82,13 @@
             android:id="@+id/spinner_repeat"
             android:layout_width="fill_parent"
             android:layout_gravity="center_vertical" />
+
+        <Button
+            android:id="@+id/btn_done_schedule"
+            android:layout_gravity="bottom|end"
+            android:backgroundTint="@color/button_background"
+            android:text="@string/ok"
+            android:textColor="@color/button_text" />
 
     </GridLayout>
 
