@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#242438</color>
-    <color name="colorPrimaryDark">#1F1F30</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#26263A</color>
+    <color name="colorPrimaryDark">#212132</color>
+    <color name="colorAccent">#a7ab41</color>
 
 
-    <color name="handle_color">#123456</color>
-    <color name="guide_color">#456123</color>
-    <color name="frame_color">#132465</color>
+    <color name="handle_color">#26263A</color>
+    <color name="guide_color">#a7ab41</color>
+    <color name="frame_color">#1F1F30</color>
     <color name="nothing">#00000000</color>
     <color name="button_background">#FA242438</color>
     <color name="button_text">#F0F0F0</color>
+    <color name="colorNoteDivider">#282844</color>
 </resources>

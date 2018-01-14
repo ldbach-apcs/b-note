@@ -19,6 +19,16 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.NotifyActivity">
+        <item name="actionMenuTextAppearance">@style/MyActionBarMenuText</item>
+        <item name="actionMenuTextColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="MyActionBarMenuText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Menu">
+        <item name="android:colorBackground">@android:color/white</item>
+    </style>
+
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

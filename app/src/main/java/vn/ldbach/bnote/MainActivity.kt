@@ -11,6 +11,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,6 +42,11 @@ class MainActivity : AppCompatActivity() {
         listNote.adapter = adapter
         listNote.layoutManager = LinearLayoutManager(this)
 
+        val divider = getDrawable(R.drawable.note_divider)
+        val noteDivider = NoteDivider(divider)
+
+        //listNote.addItemDecoration(noteDivider)
+
         addButton.setOnClickListener { _ ->
             startAddNoteActivity()
         }
@@ -46,6 +54,8 @@ class MainActivity : AppCompatActivity() {
         val callback = ItemTouchCallback(adapter)
         val helper = ItemTouchHelper(callback)
         helper.attachToRecyclerView(listNote)
+
+        setSupportActionBar(main_toolbar)
     }
 
     private fun startAddNoteActivity() {
@@ -72,13 +82,20 @@ class MainActivity : AppCompatActivity() {
             for (idx in 0 until notes.size) {
                 if (notes[idx].uuid == item.uuid) {
                     exist = true
-                    notes[idx] = item
-                    adapter.notifyItemChanged(idx)
+                    if (item.isEmpty()) {
+                        notes.removeAt(idx)
+                        adapter.notifyItemRemoved(idx)
+                        break
+                    } else {
+                        notes[idx] = item
+                        adapter.notifyItemChanged(idx)
+                    }
                 }
             }
 
             // Get data
             if (!exist) {
+                if (item.isEmpty()) return
                 notes.add(item)
                 adapter.notifyItemInserted(notes.size - 1)
             }
@@ -133,4 +150,19 @@ class MainActivity : AppCompatActivity() {
                     alarmTime,
                     pendingIntent)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_main_layout, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        startAddNoteActivity()
+        return true
+    }
+}
+
+private fun NoteItem.isEmpty(): Boolean {
+    return header.isEmpty() and content.isEmpty() and imageName.isEmpty()
 }

@@ -3,6 +3,8 @@ package vn.ldbach.bnote
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -42,10 +44,29 @@ class NotifyActivity : AppCompatActivity() {
                 .into(image)
 
         tv_note_content.text = item?.content
-        supportActionBar?.title = item?.header
 
-        toolbar.title = item?.header
-        setSupportActionBar(toolbar)
+        if (item?.content!!.isEmpty()) tv_note_content.text = resources.getString(R.string.note_no_content)
+
+        tv_note_header.text = item?.content
+
+        if (item?.content!!.isEmpty()) tv_note_header.text = resources.getString(R.string.note_untitled)
+        //supportActionBar?.title = item?.header
+
+        //toolbar.title = item?.header
+        //setSupportActionBar(toolbar)
+
+        setSupportActionBar(notify_toolbar)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_notify_layout, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        finish()
+        return true
     }
 
 }

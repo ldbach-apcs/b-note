@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BNote</string>
+    <string name="app_name">B-Note</string>
     <string name="discard_changes">Discard changes made to this note?</string>
     <string name="ok">Save</string>
     <string name="cancel">Cancel</string>
@@ -21,6 +21,9 @@
     <string name="crop_error">Cannot crop picture</string>
     <string name="note_untitled">Untitled</string>
     <string name="note_no_content">Empty body</string>
+    <string name="done">Done</string>
+    <string name="add_note">Add</string>
+    <string name="empty_note">Start taking notes now</string>
 
     <!-- Spinner string arrays -->
     <string-array name="notify_in_advance_arrays">
