@@ -1,42 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="vn.ldbach.bnote.CropActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/crop_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <com.isseiaoki.simplecropview.CropImageView
         android:id="@+id/image_cropper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fitsSystemWindows="true" />
 
-    <Button
-        android:id="@+id/btn_crop"
-        android:layout_width="wrap_content"
+    <GridLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="crop"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_gravity="bottom"
+        android:layout_weight="0"
+        android:background="@color/colorPrimary"
+        android:columnCount="4"
+        android:fitsSystemWindows="true"
+        android:paddingBottom="4dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:paddingTop="6dp">
 
-    <Button
-        android:id="@+id/btn_finish_crop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp"
-        android:text="finish"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_column="2"
+            android:background="@color/nothing"
+            android:text="@string/cancel"
+            android:textColor="#F0F0F0" />
 
-    <ImageView
-        android:id="@+id/image_preview"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_margin="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_column="3"
+            android:backgroundTint="#F0F0F0"
+            android:text="@string/ok" />
 
-</android.support.constraint.ConstraintLayout>
+    </GridLayout>
+
+</LinearLayout>

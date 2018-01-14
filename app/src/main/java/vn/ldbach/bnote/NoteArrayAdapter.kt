@@ -16,11 +16,29 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import java.util.*
 
 /**
  * Adapter for notes
  */
-class NoteArrayAdapter(private val notes: ArrayList<NoteItem>) : RecyclerView.Adapter<NoteHolder>() {
+class NoteArrayAdapter(private val notes: ArrayList<NoteItem>) : RecyclerView.Adapter<NoteHolder>(), ItemTouchHelperAdapter {
+    override fun onItemMove(from: Int, to: Int) {
+        if (from < to) {
+            for (i in from until to) {
+                Collections.swap(notes, i, i + 1)
+            }
+        } else {
+            for (i in from downTo to + 1) {
+                Collections.swap(notes, i, i - 1)
+            }
+        }
+        notifyItemMoved(from, to)
+    }
+
+    override fun onItemDismiss(where: Int) {
+        notes.removeAt(where)
+        notifyItemRemoved(where)
+    }
 
 
     override fun getItemCount(): Int {
@@ -63,6 +81,12 @@ class NoteHolder(private val v: View?, private val context: Context) : RecyclerV
         header.text = item.header
         content.text = item.content
 
+        if (item.header.isEmpty()) {
+            header.text = context.getString(R.string.note_untitled)
+        }
+        if (item.content.isEmpty()) {
+            content.text = context.getString(R.string.note_no_content)
+        }
 
         val tempImageName = item.imageName
         Log.d("b-note", tempImageName)

@@ -4,16 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/action_schedule"
-        android:icon="@drawable/ic_alarm"
-        android:title="Add schedule"
-        app:showAsAction="ifRoom"
-        tools:ignore="HardcodedText" />
-
-    <item
-        android:id="@+id/action_add_picture"
+        android:id="@+id/action_switch_picture"
         android:icon="@drawable/ic_photo"
-        android:title="Add picture"
+        android:title="Switch picture"
         app:showAsAction="ifRoom"
         tools:ignore="HardcodedText" />
 

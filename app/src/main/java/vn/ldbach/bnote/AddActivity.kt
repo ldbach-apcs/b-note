@@ -355,7 +355,6 @@ class AddActivity : AppCompatActivity(), ScheduleObserver {
                 alarmIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
 
-
         alarmManager.set(
                 AlarmManager.RTC_WAKEUP,
                 item.eventTime,

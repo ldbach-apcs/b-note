@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 
 class MainActivity : AppCompatActivity() {
@@ -36,11 +37,15 @@ class MainActivity : AppCompatActivity() {
         notes = dataStorage.loadNotes(this)
         adapter = NoteArrayAdapter(notes)
         listNote.adapter = adapter
-        listNote.layoutManager = LinearLayoutManager(applicationContext)
+        listNote.layoutManager = LinearLayoutManager(this)
 
         addButton.setOnClickListener { _ ->
             startAddNoteActivity()
         }
+
+        val callback = ItemTouchCallback(adapter)
+        val helper = ItemTouchHelper(callback)
+        helper.attachToRecyclerView(listNote)
     }
 
     private fun startAddNoteActivity() {
@@ -77,6 +82,9 @@ class MainActivity : AppCompatActivity() {
                 notes.add(item)
                 adapter.notifyItemInserted(notes.size - 1)
             }
+
+            val storage = NoteDataStorage()
+            storage.saveNotes(notes, this)
         }
     }
 

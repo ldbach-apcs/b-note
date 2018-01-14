@@ -55,7 +55,7 @@ class AlarmReceiver : BroadcastReceiver() {
         @Suppress("DEPRECATION")
         val notifyBuilder = NotificationCompat.Builder(context)
                 .setAutoCancel(true)
-                .setSmallIcon(R.drawable.ic_photo_white_36dp)
+                .setSmallIcon(R.drawable.ic_photo)
                 .setContentTitle(item.header)
                 .setContentText(item.content)
                 .setSound(alarmSound)

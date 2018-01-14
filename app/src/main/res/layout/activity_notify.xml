@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="vn.ldbach.bnote.NotifyActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -23,11 +24,12 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:id="@+id/iv_image"
+                android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@mipmap/ic_launcher_round"
-                app:layout_collapseMode="parallax" />
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax"
+                tools:ignore="ContentDescription" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -40,13 +42,5 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_notify" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
 
 </android.support.design.widget.CoordinatorLayout>

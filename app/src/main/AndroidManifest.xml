@@ -34,11 +34,14 @@
             android:label=" "
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".CropActivity" />
-
         <activity
             android:name=".NotifyActivity"
             android:label="@string/title_activity_notify"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".CropActivity"
+            android:label="@string/crop_image_title"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

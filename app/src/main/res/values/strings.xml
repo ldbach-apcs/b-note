@@ -15,6 +15,12 @@
     <string name="date_dialog">Schedule on %1$02d/%2$02d/%3$4d</string>
     <string name="time_dialog">At %1$02d:%2$02d</string>
     <string name="add_a_schedule">Add a schedule</string>
+    <string name="crop_image_title">Crop Image</string>
+    <string name="saving_dialog">Saving picture</string>
+    <string name="cropping_dialog">Cropping picture</string>
+    <string name="crop_error">Cannot crop picture</string>
+    <string name="note_untitled">Untitled</string>
+    <string name="note_no_content">Empty body</string>
 
     <!-- Spinner string arrays -->
     <string-array name="notify_in_advance_arrays">
