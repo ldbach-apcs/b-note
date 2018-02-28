@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -241,6 +242,19 @@ class AddActivity : AppCompatActivity(), ScheduleObserver {
     }
 
     private fun chooseImage() {
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            chooseImageDynamicPermission()
+        } else {
+            chooseImageStaticPermission()
+        }
+    }
+
+    private fun chooseImageStaticPermission() {
+        pickImageAndCrop()
+    }
+
+    private fun chooseImageDynamicPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,

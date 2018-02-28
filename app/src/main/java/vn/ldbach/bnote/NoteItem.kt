@@ -21,8 +21,9 @@ abstract class NoteItem(internal var header: String = "",
 
     // This variable gives information about the upcoming
     // event of current note
-    internal var eventTime: Long = Calendar.getInstance().timeInMillis
-
+    // internal var eventTime: Long = Calendar.getInstance().timeInMillis
+    internal var eventTime: Long = 0
+	
     // This variable gives information about how early
     // before the event should the notification fire
     internal var earlyNotifyTime: EarlyNotifyTime = EarlyNotifyTime.NO_NOTIFY

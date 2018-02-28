@@ -12,8 +12,8 @@ class TextNoteItem(header: String = "",
         header = jsonObject["header"] as String
         content = jsonObject["content"] as String
         imageName = jsonObject["imageName"] as String
-        // Log.d("b-note", "Object loaded: $header")
 
+        eventTime = jsonObject["eventTime"] as Long
         alarmInterval = AlarmInterval.valueOf(jsonObject["interval"] as String)
         earlyNotifyTime = EarlyNotifyTime.valueOf(jsonObject["early"] as String)
     }
@@ -25,6 +25,7 @@ class TextNoteItem(header: String = "",
         jsonObject.put("imageName", imageName)
         jsonObject.put("uuid", uuid)
 
+        jsonObject.put("event_time", eventTime)
         jsonObject.put("interval", alarmInterval.name)
         jsonObject.put("early", earlyNotifyTime.name)
         return jsonObject
