@@ -150,7 +150,7 @@ class AddActivity : AppCompatActivity(), ScheduleObserver {
         if (hasImage) {
             // Prompt
             val dialogBuilder = AlertDialog.Builder(this)
-            dialogBuilder.setItems(arrayOf("Replace picture", "Delete picture")) { _, which ->
+            dialogBuilder.setItems(R.array.handle_image_array) { _, which ->
                 if (which == 0) {
                     // Replace picture
                     chooseImage()

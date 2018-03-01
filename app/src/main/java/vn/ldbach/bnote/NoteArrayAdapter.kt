@@ -64,6 +64,7 @@ class NoteHolder(private val v: View?, private val context: Context) : RecyclerV
         (context as Activity).startActivityForResult(intent, MainActivity.REQUEST_ADD_NOTE)
     }
 
+    // private val textGroup: LinearLayout = v!!.findViewById(R.id.text_group)
     private val header: TextView = v!!.findViewById(R.id.note_header)
     private val content: TextView = v!!.findViewById(R.id.note_content)
     private val image: ImageView = v!!.findViewById(R.id.note_image)
@@ -85,11 +86,41 @@ class NoteHolder(private val v: View?, private val context: Context) : RecyclerV
         val tempImageName = item.imageName
         Log.d("b-note", tempImageName)
 
+        // val marginNoPic = R.integer.margin_no_pic
+        // val marginWithPic = R.integer.margin_with_pic
+
+        // var hasPicture = false
+
         if (tempImageName.isNotEmpty()) {
             val storage = NoteDataStorage()
             val bm = storage.loadImage(context, tempImageName)
-            if (bm != null) image.setImageBitmap(bm)
+            if (bm != null) {
+                //hasPicture = true
+                image.setImageBitmap(bm)
+                image.visibility = View.VISIBLE
+            }
+        } else {
+
+            image.visibility = View.INVISIBLE
         }
+
+        /*
+        if (hasPicture) {
+            /*
+            val param = textGroup.layoutParams as CoordinatorLayout.LayoutParams
+            param.marginEnd = marginWithPic
+            textGroup.layoutParams = param
+            */
+        }
+        else {
+            image.visibility = View.INVISIBLE
+            /*
+            val param = textGroup.layoutParams as CoordinatorLayout.LayoutParams
+            param.marginEnd = marginNoPic
+            textGroup.layoutParams = param
+            */
+        }
+        */
 
         /*val path = (context.filesDir.absolutePath + "/$tempImageName")
 

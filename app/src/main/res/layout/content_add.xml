@@ -27,13 +27,14 @@
         android:layout_marginTop="12dp"
         android:background="@android:color/transparent"
         android:hint="@string/hint_title"
-        android:inputType="text"
+        android:inputType="textMultiLine"
+        android:maxLength="36"
+        android:maxLines="2"
         android:paddingEnd="12dp"
         android:paddingStart="16dp"
         android:textColorHint="#5F5F5F"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:typeface="serif" />
+        android:textStyle="bold" />
 
     <!-- height = 0, weight = 1 -->
     <EditText

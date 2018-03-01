@@ -13,7 +13,8 @@ class TextNoteItem(header: String = "",
         content = jsonObject["content"] as String
         imageName = jsonObject["imageName"] as String
 
-        eventTime = jsonObject["eventTime"] as Long
+
+        eventTime = jsonObject["event_time"] as Long
         alarmInterval = AlarmInterval.valueOf(jsonObject["interval"] as String)
         earlyNotifyTime = EarlyNotifyTime.valueOf(jsonObject["early"] as String)
     }

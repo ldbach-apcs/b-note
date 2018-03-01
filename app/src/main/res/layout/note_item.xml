@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="92dp"
     android:layout_marginBottom="2dp"
-    android:layout_marginEnd="6dp"
-    android:layout_marginStart="6dp"
+    android:layout_marginEnd="4dp"
+    android:layout_marginStart="4dp"
     android:layout_marginTop="2dp"
     android:background="@android:color/white"
     android:clickable="true"
@@ -17,35 +17,24 @@
     android:paddingStart="16dp"
     app:elevation="4dp">
 
-    <ImageView
-        android:id="@+id/note_image"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="0dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_no_photo"
-        tools:ignore="ContentDescription" />
-
-
     <LinearLayout
         android:id="@+id/text_group"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginEnd="36dp"
-        android:layout_marginStart="72dp"
+        android:layout_marginEnd="72dp"
+        android:layout_marginStart="0dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/note_header"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="4"
             android:ellipsize="end"
             android:gravity="bottom"
-            android:maxLines="1"
+            android:maxLines="2"
+            android:paddingTop="1dp"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -55,7 +44,7 @@
             android:id="@+id/note_content"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
+            android:layout_weight="5"
             android:ellipsize="end"
             android:gravity="top"
             android:maxLines="2"
@@ -65,6 +54,18 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/note_image"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_no_photo"
+        tools:ignore="ContentDescription" />
+
+    <!--
+    <ImageView
         android:id="@+id/drag_handle"
         android:layout_width="28dp"
         android:layout_height="28dp"
@@ -73,7 +74,8 @@
         android:layout_weight="0"
         android:src="@drawable/ic_photo"
         android:tint="@color/colorAccent"
-        android:visibility="invisible"
+        android:visibility="gone"
         tools:ignore="ContentDescription" />
+    -->
 
 </android.support.design.widget.CoordinatorLayout>

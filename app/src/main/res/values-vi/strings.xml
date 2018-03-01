@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="discard_changes">Hủy bỏ những thay đổi ở ghi chú này?</string>
+    <string name="ok">Xong</string>
+    <string name="cancel">Không</string>
+    <string name="discard">Hủy</string>
+    <string name="save_changes">Lưu những thay đổi ở ghi chú này?</string>
+    <string name="save">Lưu</string>
+    <string name="title_activity_notify">NotifyActivity</string>
+    <string name="hint_content">Nội dung ghi chú</string>
+    <string name="hint_title">Ghi chú</string>
+    <string name="save_note">Lưu ghi chú</string>
+    <string name="schedule_dialog_title">Thêm lịch hẹn</string>
+
+    <string name="date_dialog">Lịch hẹn vào ngày %1$02d/%2$02d/%3$4d</string>
+    <string name="time_dialog">lúc %1$02d:%2$02d</string>
+    <string name="add_a_schedule">Thêm lịch hẹn</string>
+    <string name="crop_image_title">Cắt ảnh</string>
+    <string name="saving_dialog">Đang lưu ảnh</string>
+    <string name="cropping_dialog">Đang cắt ảnh</string>
+    <string name="crop_error">Không thể cắt ảnh</string>
+    <string name="note_untitled">Không đề</string>
+    <string name="note_no_content">Không nội dung</string>
+    <string name="done">Xong</string>
+    <string name="add_note">Thêm</string>
+    <string name="empty_note">Bắt đầu ghi chú ngay bây giờ</string>
+
+    <!-- Spinner string arrays -->
+    <string-array name="notify_in_advance_arrays">
+        <item>Không thông báo</item>
+        <item>Thông báo đúng giờ</item>
+        <item>Thông báo trước 1 giờ</item>
+        <item>Thông báo trước 1 ngày</item>
+        <item>Thông báo trước 1 tuần</item>
+    </string-array>
+
+    <string-array name="repeat_frequency_arrays">
+        <item>Không lặp lại</item>
+        <item>Lặp lại hằng ngày</item>
+        <item>Lặp lại hằng tuần</item>
+        <item>Lặp lại hằng năm</item>
+    </string-array>
+
+    <string-array name="handle_image_array">
+        <item>Đổi ảnh</item>
+        <item>Xóa ảnh</item>
+    </string-array>
+</resources>

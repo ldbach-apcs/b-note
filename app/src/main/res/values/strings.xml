@@ -41,4 +41,10 @@
         <item>Repeat yearly</item>
     </string-array>
 
+    <string-array name="handle_image_array">
+        <item>Replace picture</item>
+        <item>Delete picture</item>
+    </string-array>
+
+
 </resources>
