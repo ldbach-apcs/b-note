@@ -6,11 +6,11 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
@@ -38,14 +38,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         notes = dataStorage.loadNotes(this)
-        adapter = NoteArrayAdapter(notes)
+        adapter = NoteArrayAdapter(notes, this)
         listNote.adapter = adapter
         listNote.layoutManager = LinearLayoutManager(this)
-
-        val divider = getDrawable(R.drawable.note_divider)
-        val noteDivider = NoteDivider(divider)
-
-        //listNote.addItemDecoration(noteDivider)
 
         addButton.setOnClickListener { _ ->
             startAddNoteActivity()
@@ -89,6 +84,7 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         notes[idx] = item
                         adapter.notifyItemChanged(idx)
+                        deleteAlarm(item)
                     }
                 }
             }
@@ -100,6 +96,7 @@ class MainActivity : AppCompatActivity() {
                 adapter.notifyItemInserted(notes.size - 1)
             }
 
+            setAlarms()
             val storage = NoteDataStorage()
             storage.saveNotes(notes, this)
         }
@@ -110,6 +107,25 @@ class MainActivity : AppCompatActivity() {
         setAlarms()
     }
 
+    private fun deleteAlarm(item: NoteItem) {
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val alarmIntent = Intent(this, AlarmReceiver::class.java)
+
+        alarmIntent.action = "vn.ldbach.bnote"
+
+        val bundle = Bundle()
+        bundle.putSerializable("note_item", item)
+        alarmIntent.putExtra("bundle", bundle)
+
+        val pendingIntent = PendingIntent.getBroadcast(
+                this,
+                item.uuid.hashCode(),
+                alarmIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT)
+
+        alarmManager.cancel(pendingIntent)
+    }
+
     private fun setAlarms() {
         notes
                 .filter { it.earlyNotifyTime != EarlyNotifyTime.NO_NOTIFY }
@@ -117,7 +133,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setAlarm(item: NoteItem) {
-        Log.d("b-note", "Test alarm clicked")
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val alarmIntent = Intent(this, AlarmReceiver::class.java)
 
@@ -142,8 +157,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         // If none repetitive alarm fired already
-        if (alarmTime <= System.currentTimeMillis())
-            item.earlyNotifyTime = EarlyNotifyTime.NO_NOTIFY
+        if (alarmTime <= System.currentTimeMillis()) {
+            // item.earlyNotifyTime = EarlyNotifyTime.NO_NOTIFY
+        }
         else
             alarmManager.set(
                     AlarmManager.RTC_WAKEUP,
@@ -161,8 +177,23 @@ class MainActivity : AppCompatActivity() {
         startAddNoteActivity()
         return true
     }
-}
 
+    fun handleItemRemove(where: Int, removedItem: NoteItem) {
+        deleteAlarm(removedItem)
+        val snackbarMsg = R.string.note_deleted_msg
+        Snackbar.make(main_wrapper, snackbarMsg, Snackbar.LENGTH_LONG)
+                .setAction(R.string.snackbar_action, { _ ->
+                    undoDeleteNote(where, removedItem)
+                })
+                .show()
+    }
+
+    private fun undoDeleteNote(where: Int, removedItem: NoteItem) {
+        notes.add(where, removedItem)
+        adapter.notifyItemInserted(where)
+        setAlarms()
+    }
+}
 private fun NoteItem.isEmpty(): Boolean {
     return header.isEmpty() and content.isEmpty() and imageName.isEmpty()
 }

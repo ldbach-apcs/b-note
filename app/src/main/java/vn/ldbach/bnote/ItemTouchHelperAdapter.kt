@@ -5,5 +5,5 @@ package vn.ldbach.bnote
  */
 interface ItemTouchHelperAdapter {
     fun onItemMove(from: Int, to: Int)
-    fun onItemDismiss(where: Int)
+    fun onItemDelete(where: Int)
 }

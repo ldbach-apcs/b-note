@@ -15,7 +15,8 @@ import java.util.*
 /**
  * Adapter for notes
  */
-class NoteArrayAdapter(private val notes: ArrayList<NoteItem>) : RecyclerView.Adapter<NoteHolder>(), ItemTouchHelperAdapter {
+class NoteArrayAdapter(private val notes: ArrayList<NoteItem>, private val activity: MainActivity)
+    : RecyclerView.Adapter<NoteHolder>(), ItemTouchHelperAdapter {
     override fun onItemMove(from: Int, to: Int) {
         if (from < to) {
             for (i in from until to) {
@@ -29,9 +30,12 @@ class NoteArrayAdapter(private val notes: ArrayList<NoteItem>) : RecyclerView.Ad
         notifyItemMoved(from, to)
     }
 
-    override fun onItemDismiss(where: Int) {
+    override fun onItemDelete(where: Int) {
+        val removedItem = notes[where]
         notes.removeAt(where)
         notifyItemRemoved(where)
+
+        activity.handleItemRemove(where, removedItem)
     }
 
 

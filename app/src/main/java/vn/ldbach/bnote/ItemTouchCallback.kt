@@ -6,10 +6,10 @@ import android.support.v7.widget.helper.ItemTouchHelper
 /**
  * Created by Duy-Bach on 1/14/2018.
  */
-class ItemTouchCallback(val adapter: ItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
+class ItemTouchCallback(private val adapter: ItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
     override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
         val dragFlag = ItemTouchHelper.UP + ItemTouchHelper.DOWN
-        val swipeFlag = ItemTouchHelper.LEFT
+        val swipeFlag = ItemTouchHelper.LEFT + ItemTouchHelper.RIGHT
         return makeMovementFlags(dragFlag, swipeFlag)
     }
 
@@ -19,6 +19,6 @@ class ItemTouchCallback(val adapter: ItemTouchHelperAdapter) : ItemTouchHelper.C
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
-        adapter.onItemDismiss(viewHolder?.adapterPosition!!)
+        adapter.onItemDelete(viewHolder?.adapterPosition!!)
     }
 }

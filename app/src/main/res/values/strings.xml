@@ -6,7 +6,7 @@
     <string name="discard">Discard</string>
     <string name="save_changes">Save changes made to this note?</string>
     <string name="save">Save</string>
-    <string name="title_activity_notify">NotifyActivity</string>
+    <string name="title_activity_notify">You have a schedule</string>
     <string name="hint_content">Add description</string>
     <string name="hint_title">Take your note</string>
     <string name="save_note">Save note</string>
@@ -24,6 +24,8 @@
     <string name="done">Done</string>
     <string name="add_note">Add</string>
     <string name="empty_note">Start taking notes now</string>
+    <string name="note_deleted_msg">Deleted a note</string>
+    <string name="snackbar_action">UNDO</string>
 
     <!-- Spinner string arrays -->
     <string-array name="notify_in_advance_arrays">

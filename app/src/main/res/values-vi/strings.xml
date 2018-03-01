@@ -6,7 +6,7 @@
     <string name="discard">Hủy</string>
     <string name="save_changes">Lưu những thay đổi ở ghi chú này?</string>
     <string name="save">Lưu</string>
-    <string name="title_activity_notify">NotifyActivity</string>
+    <string name="title_activity_notify">Bạn có một lịch hẹn</string>
     <string name="hint_content">Nội dung ghi chú</string>
     <string name="hint_title">Ghi chú</string>
     <string name="save_note">Lưu ghi chú</string>
@@ -24,6 +24,8 @@
     <string name="done">Xong</string>
     <string name="add_note">Thêm</string>
     <string name="empty_note">Bắt đầu ghi chú ngay bây giờ</string>
+    <string name="note_deleted_msg">Đã xóa ghi chú</string>
+    <string name="snackbar_action">UNDO</string>
 
     <!-- Spinner string arrays -->
     <string-array name="notify_in_advance_arrays">
